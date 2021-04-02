@@ -1,0 +1,18 @@
+language: go
+go:
+  - 1.15.x
+os:
+  - linux
+script:
+  - go get ./...
+  - go build -o kube-ldap-client-go-exec-plugin-$TRAVIS_OS_NAME
+
+deploy:
+  provider: releases
+  token: $GITHUB_TOKEN
+  name: kube-ldap-client-go-exec-plugin $TRAVIS_TAG
+  file: kube-ldap-client-go-exec-plugin-$TRAVIS_OS_NAME
+  skip_cleanup: true
+  on:
+    repo: cccfs/kube-ldap-client-go-exec-plugin
+    tags: true
