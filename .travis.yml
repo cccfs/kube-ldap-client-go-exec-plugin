@@ -4,6 +4,7 @@ go:
 os:
   - linux
 script:
+  - go get ./...
   - go build -o kube-ldap-client-go-exec-plugin-$TRAVIS_OS_NAME
 
 deploy:
