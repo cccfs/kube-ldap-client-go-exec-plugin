@@ -14,13 +14,11 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-	_ "syscall"
 	"golang.org/x/crypto/ssh/terminal"
 )
 
 var url string
 
-//转换格式
 const TimeJsISOFormat = "2006-01-02T15:04:05.999Z07:00" //https://www.dazhuanlan.com/2019/08/23/5d5ee4ae8f39f/
 
 type H map[string]interface{}
@@ -103,8 +101,6 @@ func auth(username, password string) string {
 		os.Exit(1)
 	}
 	req.SetBasicAuth(username, password)
-	//var bearer = "Bearer " + base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
-	//req.Header.Add("Authorization", bearer)
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println("Login failed")
@@ -117,12 +113,9 @@ func auth(username, password string) string {
 	if code != 200 {
 		result = parseUnauthenticatedResponse(code)
 	} else {
-		//解析token内容,不需要使用secret key
 		decodedToken, _ := jwt.Parse(token, nil)
 		claims, _ := decodedToken.Claims.(jwt.MapClaims)
-		//fmt.Println(claims)
 
-		//解析exp时间
 		var parseExpTime time.Time
 		switch exp := claims["exp"].(type) {
 		case float64:
@@ -133,8 +126,6 @@ func auth(username, password string) string {
 		}
 		exp := parseExpTime.Format(TimeJsISOFormat)
 		result = parseAuthenticatedResponse(token, exp)
-		//cacheFile := cachePath()
-		//ioutil.WriteFile(cacheFile, []byte(result), 0777)
 	}
 	return result
 }
@@ -148,7 +139,6 @@ func parseAuthenticatedResponse(token, exp string) string  {
 			"expirationTimestamp": exp,
 		},
 	}
-	//json格式化输出
 	authenticatedResponse, err := json.MarshalIndent(authenticatedTemplate, "", "  ")
 	if err != nil {
 		log.Fatal(err)
@@ -167,7 +157,6 @@ func parseUnauthenticatedResponse(code int) string {
 		},
 		"interactive": true,
 	}
-	//json格式化输出
 	unauthenticatedResponse, err := json.MarshalIndent(unauthenticatedTemplate, "", "  ")
 	if err != nil {
 		log.Fatal(err)
