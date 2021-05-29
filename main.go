@@ -75,7 +75,7 @@ func credentials() (string, string) {
 	password := string(bytePassword)
 
 	//password, _ := reader.ReadString('\n')
-	return strings.TrimSpace(username), strings.TrimSpace(password)
+	return strings.TrimSpace(username), fmt.Sprintf("%s\n", strings.TrimSpace(password)) //strings.TrimSpace(password)
 }
 
 var cachePath = func() string {
