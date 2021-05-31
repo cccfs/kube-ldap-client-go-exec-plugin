@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/ssh/terminal"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -14,7 +15,6 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-	"golang.org/x/crypto/ssh/terminal"
 )
 
 var url string
@@ -60,6 +60,7 @@ func main()  {
 
 }
 
+
 func credentials() (string, string) {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -72,6 +73,7 @@ func credentials() (string, string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	password := string(bytePassword)
 
 	//password, _ := reader.ReadString('\n')
