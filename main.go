@@ -129,6 +129,7 @@ func auth(username, password string) string {
 		exp := parseExpTime.Format(TimeJsISOFormat)
 		result = parseAuthenticatedResponse(token, exp)
 	}
+	time.Sleep(1 * time.Second)
 	return result
 }
 
